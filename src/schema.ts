@@ -10,9 +10,20 @@ type Query{
       name: String!,
       email: String!,
       password: String!
-    
-    ): User
+      bio: String
+    ): UserArgs
 
+
+    signIn(
+      email: String,
+      password: String
+    ): UserArgs
+
+  }
+
+  type UserArgs{
+    userError: String
+    token: String
   }
   type Post {
     id: ID!
