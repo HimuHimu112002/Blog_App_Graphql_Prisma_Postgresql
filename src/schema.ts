@@ -19,12 +19,29 @@ type Query{
       password: String
     ): UserArgs
 
+    post(
+      title: String!,
+      content: String!
+    ): PostPayload
+
+    updatePost(postId: ID!, post:PostInput): PostPayload
+    deletePost(postId: ID!): PostPayload
+
   }
 
   type UserArgs{
     userError: String
     token: String
   }
+    type PostPayload{
+    userError: String
+    post: Post
+  }
+    input PostInput{
+    title: String
+    content: String
+  }
+
   type Post {
     id: ID!
     title: String!
