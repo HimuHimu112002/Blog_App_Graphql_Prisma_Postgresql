@@ -5,7 +5,7 @@ import { typeDefs } from "./schema";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { getUserVerify } from "./utils/jwtTokenHelper";
 import { DefaultArgs } from "@prisma/client/runtime/library";
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 interface Context{
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
@@ -24,6 +24,7 @@ const main = async () => {
       const userInfo = await getUserVerify(req.headers.authorization as string)
       return{
         prisma,
+        //@ts-ignore
         userInfo
       }
     }

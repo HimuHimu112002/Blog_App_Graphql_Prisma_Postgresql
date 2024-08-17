@@ -66,8 +66,8 @@ export const postResolvers = {
       },
       data: {
         // args.post,
-        published: true
-      }
+        published: true,
+      },
     });
     return {
       userError: null,
@@ -118,6 +118,55 @@ export const postResolvers = {
     return {
       userError: null,
       post: deletePost,
+    };
+  },
+
+  publishPost: async (parent: any, args: any, { prisma, userInfo }: any) => {
+    if (!userInfo) {
+      return {
+        userError: "Unauthorized",
+        post: null,
+      };
+    }
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userInfo,
+      },
+    });
+    if (!user) {
+      return {
+        userError: "user not found",
+        post: null,
+      };
+    }
+    const Upost = await prisma.post.findUnique({
+      where: {
+        id: Number(args.postId),
+      },
+    });
+    if (!Upost) {
+      return {
+        userError: "post not found",
+        post: null,
+      };
+    }
+    if (Upost.authorId !== user.id) {
+      return {
+        userError: "post not owned by user",
+        post: null,
+      };
+    }
+    const publishedPost = await prisma.post.update({
+      where: {
+        id: Number(args.postId),
+      },
+      data: {
+        published: true,
+      },
+    });
+    return {
+      userError: null,
+      post: publishedPost,
     };
   },
 };

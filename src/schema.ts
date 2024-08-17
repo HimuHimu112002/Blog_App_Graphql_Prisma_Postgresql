@@ -4,6 +4,7 @@ type Query{
   me: User
   users: [User]
   posts: [Post]
+  profile(userId: ID!): Profile
 }
   type Mutation{
     signup(
@@ -19,14 +20,10 @@ type Query{
       password: String
     ): UserArgs
 
-    post(
-      title: String!,
-      content: String!
-    ): PostPayload
-
-    updatePost(postId: ID!, post:PostInput): PostPayload
+    post(title: String!,content: String!): PostPayload
+    updatePost(postId: ID!, post:PostInput!): PostPayload
     deletePost(postId: ID!): PostPayload
-
+    publishPost(postId: ID!): PostPayload
   }
 
   type UserArgs{
